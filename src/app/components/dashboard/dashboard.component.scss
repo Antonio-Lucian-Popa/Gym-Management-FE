@@ -1,0 +1,26 @@
+table {
+  width: auto;
+  border: 2px solid #E9E9EA;
+}
+
+.mat-form-field {
+  font-size: 14px;
+}
+
+.table-container {
+  margin-top: 10px;
+  height: 36rem;
+  overflow: auto;
+}
+
+.flex.space-x-2 > * {
+  margin-right: 0.5rem;
+}
+
+.flex.space-x-2 > *:last-child {
+  margin-right: 0;
+}
+
+.mat-table-sticky:last-child {
+  border-left: 1px solid #e0e0e0!important;
+}

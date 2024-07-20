@@ -1,0 +1,78 @@
+<div class="flex justify-center items-center w-full min-h-screen">
+  <div class="flex flex-col w-full max-w-5xl px-4">
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex items-center w-full">
+        <div class="relative rounded-md shadow-sm flex-grow mr-4">
+          <input type="text" (keyup)="applyFilter($event)" placeholder="Search..." #input class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        </div>
+        <button mat-raised-button (click)="addUser()" class="bg-blue-500 text-white px-4 py-2 rounded shadow">
+          Add User
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto table-container">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 w-full table-fixed">
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> First Name </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2"> {{element.firstName}} </td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> Last Name </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2"> {{element.lastName}} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> Email </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2"> {{element.email ? element.email : '-'}} </td>
+        </ng-container>
+
+        <!-- Phone Number Column -->
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> Phone Number </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2"> {{element.phoneNumber ? element.phoneNumber : '-'}} </td>
+        </ng-container>
+
+        <!-- Subscription Start Date Column -->
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> Subscription Start </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2"> {{element.startDate | date: 'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Subscription End Date Column -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> Subscription End </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2"> {{element.endDate | date: 'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef class="px-4 py-2"> Actions </th>
+          <td mat-cell *matCellDef="let element" class="px-4 py-2">
+            <div class="flex space-x-2">
+              <button mat-raised-button (click)="editUser(element)" class="bg-blue-500 text-white px-4 py-2 rounded shadow">
+                Edit
+              </button>
+              <button mat-raised-button (click)="deleteUser(element)" class="bg-red-500 text-white px-4 py-2 rounded shadow">
+                Delete
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell px-4 py-2 w-full" colspan="7">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
