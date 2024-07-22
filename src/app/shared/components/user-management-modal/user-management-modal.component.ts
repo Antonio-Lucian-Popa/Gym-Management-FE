@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GymService } from 'src/app/components/services/gym.service';
 
 @Component({
   selector: 'app-user-management-modal',
@@ -11,13 +12,16 @@ export class UserManagementModalComponent implements OnInit {
 
   user: any;
 
+  phonePrefixes: string[] = [];
+  subscriptionTypes: string[] = [];
+
   clientData = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: [''],
-    phonePrefix: ['', Validators.required],
+    phonePrefix: ['+44', Validators.required],
     phoneNumber: ['', Validators.required],
-    subscriptionType: ['', Validators.required],
+    subscriptionType: ['MONTH', Validators.required],
     subscriptionNumber: ['', Validators.required],
     startDate: [''],
     endDate: [''],
@@ -25,9 +29,10 @@ export class UserManagementModalComponent implements OnInit {
   });
 
   constructor( public dialogRef: MatDialogRef<UserManagementModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private gymService: GymService) {
       if(data) {
         this.user = data.user;
+        console.log(this.user);
 
         this.clientData.patchValue({
           firstName: this.user.firstName,
@@ -45,9 +50,42 @@ export class UserManagementModalComponent implements OnInit {
     }
 
   ngOnInit(): void {
+
+    this.gymService.getGymSubscriptionTypes().subscribe((data: any) => {
+      console.log(data);
+      this.subscriptionTypes = data;
+    });
+
+    this.gymService.getPhonePrefixes().subscribe((data: any) => {
+      console.log(data);
+      this.phonePrefixes = data;
+    });
+
+    this.clientData.valueChanges.subscribe((data) => {
+      if(data.subscriptionType && data.subscriptionNumber) {
+        const subscriptionPrice = data.subscriptionType === 'MONTH' ? this.gymService.gymPrice.month : data.subscriptionType === 'DAY' ? this.gymService.gymPrice.day : this.gymService.gymPrice.year;
+        this.clientData.patchValue({
+          subscriptionTypes: data.subscriptionType.toUpperCase(),
+          subscriptionPrice: subscriptionPrice * data.subscriptionNumber
+        }, { emitEvent: false });
+      } else {
+        this.clientData.patchValue({
+          subscriptionPrice: ''
+        }, { emitEvent: false});
+      }
+    });
   }
 
-  saveUser() {}
+  saveUser() {
+    const payload = {
+      ...this.clientData.value,
+      gymId: this.gymService.gymId,
+      role: "CLIENT"
+    };
+    this.gymService.addClient(payload).subscribe((data) => {
+      this.dialogRef.close(data);
+    });
+  }
 
   close() {
     this.dialogRef.close();

@@ -43,3 +43,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+
+.active {
+  background-color: #f3f4f6;
+  svg {
+    color: #111827!important;
+  }
+}

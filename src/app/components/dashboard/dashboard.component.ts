@@ -63,18 +63,23 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+       this.gymUsers.push(result);
+       this.dataSource = new MatTableDataSource(this.gymUsers);
+     });
   }
 
   editUser(user: any) {
+    console.log(user)
     const dialogRef = this.dialog.open(UserManagementModalComponent, {
       width: '500px',
-      data: user
+      data: {
+        user: user
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+     // this.gymUsers.push(result);
+      this.dataSource = new MatTableDataSource(this.gymUsers);
     });
   }
 

@@ -9,12 +9,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserManagementModalComponent } from './shared/components/user-management-modal/user-management-modal.component';
+import { SidebarComponent } from './components/navbar/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    UserManagementModalComponent
+    UserManagementModalComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
